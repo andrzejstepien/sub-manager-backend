@@ -4,9 +4,16 @@ export class Data {
         this.#db = db
     }
     async init() {
-        this.stories = await this.getStories()
-        this.publications = await this.getPublications()
         this.submissions = await this.getSubmissions()
+        this.stories = await this.getStories()
+        this.stories.map(row=>{
+            row.submissions=this.getSubmissionsByStoryId(row.id)
+        })
+        this.publications = await this.getPublications()
+        this.publications.map(row=>{
+            row.submissions=this.getSubmissionsByPublicationId(row.id)
+        })
+        return this
     }
     async getStories() {
         return this.#db('stories')
@@ -31,6 +38,14 @@ export class Data {
                 'subs.response_id',
                 'responses.response'
             )
+    }
+
+    getSubmissionsByStoryId(id){
+        return this.submissions.filter(row=>row.story_id==id)
+    }
+
+    getSubmissionsByPublicationId(id){
+        return this.submissions.filter(row=>row.pub_id==id)
     }
 
 }
