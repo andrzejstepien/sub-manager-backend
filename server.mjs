@@ -1,20 +1,27 @@
-import  express from "express";
+import express from "express"
+import pinoHTTP from 'pino-http'
+import logger from "./logger.mjs";
+import bodyParser from "body-parser";
+import { Data } from "./objects/Data.mjs";
+import { db } from "./db.mjs";
+import { getEndpoints } from "./objects/Endpoints.mjs";
+import cors from 'cors'
 
 const app = express()
 const port = 4000
-app.use(
-  pinoHTTP({
-    logger,
-  }),
-  cors({
-    origin: ['http://localhost:5173']
-  }),
-  bodyParser.json()
-)
+const corsOptions={
+  origin: ['http://localhost:5173']
+}
+app.use(cors())
+app.use(pinoHTTP({logger}))
+app.use(bodyParser.json())
+  
+
 
 
 const data = new Data(db)
 await data.init()
+
 app.use('/api',getEndpoints(data))
 
 
