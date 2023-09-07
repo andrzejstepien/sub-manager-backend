@@ -1,11 +1,16 @@
 import dv from "./dv.mjs"
 export default class Entity{
-    constructor(data){
-        if(data?.id){
-            if(!Number.isInteger(data.id)){throw new TypeError("id must be an integer!")}
-            this.id = data.id
+    set _id(prop){
+        if(prop){
+            if(!Number.isInteger(prop)){throw new TypeError("id must be an integer!")}
+            this.id = prop
         }
     }
+    
+    constructor(data){
+        this._id = data?.id
+    }
+    
 
     async insert(db){
         return db(this.table)
