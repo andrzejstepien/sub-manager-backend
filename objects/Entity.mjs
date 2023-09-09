@@ -25,7 +25,7 @@ export default class Entity{
         if(!this?.id){throw new Error("cannot delete without an id!")}
         return db(this.table)
         .where('id',this.id)
-        this.del()
+        .del()
     }
 }
 

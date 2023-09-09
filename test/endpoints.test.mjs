@@ -18,7 +18,7 @@ app.use('/api',getEndpoints(data))
 app.use('/api', endpoints(db))
 
 
-
+describe("testing endpoints...",async function(){
 describe("Testing GET endpoints", async function(){
     describe("GET stories",async function(){
         it("should return a status code of 200 and an array", async function(){
@@ -302,4 +302,82 @@ describe("testing /edit endpoints",async function(){
         })
 
     })
+})
+describe("testing /delete endpoints",async function(){
+    describe("/story/delete",async function(){
+        it("item should be deleted from db",async function(){
+            let id = await db('stories').
+        insert({
+            title:"#test",
+            word_count:500
+        })
+        .returning('id')
+        id=id[0].id
+
+        await chai.request(app)
+        .post('/api/story/delete')
+        .send({id})
+
+        const res = await db('stories')
+        .select('*')
+        .where('id',id)
+        expect(res).to.have.lengthOf(0)
+        })
+
+        await db('stories')
+        .where('title','#test')
+        .del()
+    })
+    describe("/publication/delete",async function(){
+        it("item should be deleted from db",async function(){
+            let id = await db('pubs').
+        insert({
+            title:"#test",
+            link:'link'
+        })
+        .returning('id')
+        id=id[0].id
+
+        await chai.request(app)
+        .post('/api/publication/delete')
+        .send({id})
+
+        const res = await db('pubs')
+        .select('*')
+        .where('id',id)
+        expect(res).to.have.lengthOf(0)
+        })
+
+        await db('pubs')
+        .where('title','#test')
+        .del()
+    })
+    describe("/submission/delete",async function(){
+        it("item should be deleted from db",async function(){
+            let id = await db('subs').
+        insert({
+            story_id:1,
+            pub_id:1,
+            response_id:1,
+            date_submitted:"1066-01-01",
+            date_responded:"1066-01-01"
+        })
+        .returning('id')
+        id=id[0].id
+
+        await chai.request(app)
+        .post('/api/submission/delete')
+        .send({id})
+
+        const res = await db('subs')
+        .select('*')
+        .where('id',id)
+        expect(res).to.have.lengthOf(0)
+        })
+
+        await db('subs')
+        .where('date_submitted','1066-01-01')
+        .del()
+    })
+})
 })
