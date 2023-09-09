@@ -7,6 +7,9 @@ export default class Publication extends Title{
             this.link=prop
         }
     }
+    get table(){
+        return 'pubs'
+    }
     constructor(data){
         super(data)
         this._link=data?.link

@@ -32,6 +32,9 @@ export default class Submission extends Entity{
             this.date_responded=prop
         }
     }
+    get table(){
+        return 'subs'
+    }
     constructor(data){
         super(data)
         this._story_id=data?.story_id

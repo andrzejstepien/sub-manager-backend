@@ -6,7 +6,9 @@ export default class Story extends Title{
             this.word_count=prop
         }     
     }
-
+    get table(){
+        return 'stories'
+    }
     constructor(data){
         super(data)
         this._word_count=data?.word_count
