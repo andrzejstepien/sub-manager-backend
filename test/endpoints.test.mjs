@@ -161,5 +161,145 @@ describe("testing /create endpoints", async function(){
         })
         
     })
-    
+})
+describe("testing /edit endpoints",async function(){
+    describe("/story/edit",async function(){
+        const goodData = {
+            id:1,
+            title:"#test",
+            word_count:111
+        } 
+        const badData = {
+            id:"string"
+        }
+        let prev = {}
+        beforeEach(async function(){
+            prev = await db('stories')
+            .select('*')
+            .where('id',1)
+            prev = prev[0]
+        })
+        afterEach(async function(){
+            await db('stories')
+            .where('id',1)
+            .update(prev)
+        })
+        it("should return 200 when sent valid data",async function(){
+            const res = await chai.request(app)
+            .post('/api/story/edit')
+            .send(goodData)
+            expect(res).to.have.status(200)
+        })
+        it("should return 400 when sent invalid data",async function(){
+            const res = await chai.request(app)
+            .post('/api/story/edit')
+            .send(badData)
+            expect(res).to.have.status(400)
+        })
+        it("the edit should be reflected in the database",async function(){
+            await chai.request(app)
+            .post('/api/story/edit')
+            .send(goodData)
+            const res = await db('stories').
+            select('*')
+            .where('id',goodData.id)
+            expect(res[0]).to.eql(goodData)
+        })
+
+    })
+    describe("/publication/edit",async function(){
+        const goodData = {
+            id:1,
+            title:"#test",
+            link:"link"
+        } 
+        const badData = {
+            id:"string"
+        }
+        let prev = {}
+        beforeEach(async function(){
+            prev = await db('pubs')
+            .select('*')
+            .where('id',1)
+            prev = prev[0]
+        })
+        afterEach(async function(){
+            await db('pubs')
+            .where('id',1)
+            .update(prev)
+        })
+        it("should return 200 when sent valid data",async function(){
+            const res = await chai.request(app)
+            .post('/api/publication/edit')
+            .send(goodData)
+            expect(res).to.have.status(200)
+        })
+        it("should return 400 when sent invalid data",async function(){
+            const res = await chai.request(app)
+            .post('/api/publication/edit')
+            .send(badData)
+            expect(res).to.have.status(400)
+        })
+        it("the edit should be reflected in the database",async function(){
+            await chai.request(app)
+            .post('/api/publication/edit')
+            .send(goodData)
+            const res = await db('pubs').
+            select('*')
+            .where('id',goodData.id)
+            expect(res[0]).to.eql(goodData)
+        })
+
+    })
+    describe("/submission/edit",async function(){
+        const goodData = {
+            id:1,
+            story_id:1,
+            pub_id:1,
+            response_id:1,
+            date_submitted:"1066-01-01",
+            date_responded:"1066-01-01"
+        } 
+        const badData = {
+            story_id:"string",
+            pub_id:1,
+            response_id:1,
+            date_submitted:"1066-01-01",
+            date_responded:"1066-01-01"
+        }
+        let prev = {}
+        beforeEach(async function(){
+            prev = await db('subs')
+            .select('*')
+            .where('id',1)
+            prev = prev[0]
+        })
+        afterEach(async function(){
+            await db('subs')
+            .where('id',1)
+            .update(prev)
+        })
+        it("should return 200 when sent valid data",async function(){
+            const res = await chai.request(app)
+            .post('/api/submission/edit')
+            .send(goodData)
+            expect(res).to.have.status(200)
+        })
+        it("should return 400 when sent invalid data",async function(){
+            const res = await chai.request(app)
+            .post('/api/submission/edit')
+            .send(badData)
+            expect(res).to.have.status(400)
+        })
+        it("the edit should be reflected in the database",async function(){
+            await chai.request(app)
+            .post('/api/submission/edit')
+            .send(goodData)
+            const res = await db('subs').
+            select('*')
+            .where('id',goodData.id)
+            expect(res[0]).to.eql(goodData)
+        })
+
+    })
 })
