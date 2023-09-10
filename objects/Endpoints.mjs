@@ -49,10 +49,12 @@ export const endpoints = (db) => {
  const endpoint = (router,Entity,path,method,db) =>{
     router.post(`/${Entity.name.toLowerCase()}/${path}`, async (req,res) => {
         try {  
+            logger.trace({data:req.body},"POST request received")
             const entity = new Entity(req.body)
             await entity[method](db)
             res.sendStatus(200)
         } catch (error) {
+            logger.error(error)
             if(error instanceof TypeError){
                 res.sendStatus(400)
             }
