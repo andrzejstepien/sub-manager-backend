@@ -29,6 +29,11 @@ export const getEndpoints = (dbObject) => {
         res.send(dbObject.submissions)
         return
     })
+    router.get('/responses', (req,res)=>{
+        res.statusCode=200
+        res.send(dbObject.responses)
+        return
+    })
 
     return router
 }
