@@ -15,50 +15,57 @@ export const getEndpoints = (dbObject) => {
     router.get('/stories', (req,res)=>{
         res.statusCode=200
         res.send(dbObject.stories)
+        return
     })
     
     router.get('/publications', (req,res)=>{
         res.statusCode=200
         res.send(dbObject.publications)
+        return
     })
     
     router.get('/submissions', (req,res)=>{
         res.statusCode=200
         res.send(dbObject.submissions)
+        return
     })
 
     return router
 }
 
-export const endpoints = (db) => {
+export const postEndpoints = (db,data) => {
     const router = express.Router()
-    endpoint(router,Story,'create','insert',db)
-    endpoint(router,Story,'edit','update',db)
-    endpoint(router,Story,'delete','del',db)
-    endpoint(router,Submission,'create','insert',db)
-    endpoint(router,Submission,'edit','update',db)
-    endpoint(router,Submission,'delete','del',db)
-    endpoint(router,Publication,'create','insert',db)
-    endpoint(router,Publication,'edit','update',db)
-    endpoint(router,Publication,'delete','del',db)
+    endpoint(router,Story,'create','insert',db,data)
+    endpoint(router,Story,'edit','update',db,data)
+    endpoint(router,Story,'delete','del',db,data)
+    endpoint(router,Submission,'create','insert',db,data)
+    endpoint(router,Submission,'edit','update',db,data)
+    endpoint(router,Submission,'delete','del',db,data)
+    endpoint(router,Publication,'create','insert',db,data)
+    endpoint(router,Publication,'edit','update',db,data)
+    endpoint(router,Publication,'delete','del',db,data)
     return router
 }
 
 
 
- const endpoint = (router,Entity,path,method,db) =>{
+ const endpoint = (router,Entity,path,method,db,data) =>{
     router.post(`/${Entity.name.toLowerCase()}/${path}`, async (req,res) => {
         try {  
             logger.trace({data:req.body},"POST request received")
             const entity = new Entity(req.body)
             await entity[method](db)
             res.sendStatus(200)
+            data.init()
+            return
         } catch (error) {
             logger.error(error)
             if(error instanceof TypeError){
                 res.sendStatus(400)
+                return
             }
             res.sendStatus(500)
+            return
         }
     })
 }

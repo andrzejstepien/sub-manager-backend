@@ -6,8 +6,7 @@ import chaiHttp from "chai-http";
 import { testDb as db } from "../db.mjs";
 import { Data } from "../objects/Data.mjs";
 import { beforeEach, afterEach } from "mocha";
-import { endpoints, getEndpoints } from "../objects/Endpoints.mjs";
-import Submission from "../objects/Submission.mjs"
+import { postEndpoints, getEndpoints } from "../objects/Endpoints.mjs";
 
 chai.use(chaiHttp)
 const app = express()
@@ -15,7 +14,7 @@ const data = new Data(db)
 await data.init()
 app.use(bodyParser.json())
 app.use('/api',getEndpoints(data))
-app.use('/api', endpoints(db))
+app.use('/api', postEndpoints(db))
 
 
 describe("testing endpoints...",async function(){
