@@ -13,6 +13,7 @@ export class Data {
         this.publications.map(row=>{
             row.submissions=this.getSubmissionsByPublicationId(row.id)
         })
+        this.responses = await this.getResponses()
         return this
     }
     async getStories() {
@@ -38,6 +39,10 @@ export class Data {
                 'subs.response_id',
                 'responses.response'
             )
+    }
+    async getResponses() {
+        return this.#db('responses')
+        .select('*')
     }
 
     getSubmissionsByStoryId(id){
