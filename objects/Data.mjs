@@ -4,18 +4,22 @@ export class Data {
         this.#db = db
     }
     async init() {
+        this.genres = await this.getGenres()
         this.submissions = await this.getSubmissions()
         this.stories = await this.getStories()
-        this.stories.map(row=>{
+        for (const row of this.stories) {
             row.submissions=this.getSubmissionsByStoryId(row.id)
-            
-        })
+            row.genres= await this.getGenresByStoryId(row.id)
+        }
+        //
         this.publications = await this.getPublications()
-        this.publications.map(row=>{
+        for (const row of this.publications){
             row.submissions=this.getSubmissionsByPublicationId(row.id)
-        })
+            row.genres= await this.getGenresByPublicationId(row.id)
+        }
+
         this.responses = await this.getResponses()
-        this.genres = await this.getGenres()
+        
         return this
     }
     async getStories() {
@@ -73,7 +77,6 @@ export class Data {
         const res = await this.#db('pubs_genres')
         .select('genre_id')
         .where('pub_id',id)
-        console.dir(res)
         return this.#makeGenreArray(res)
     }
 
