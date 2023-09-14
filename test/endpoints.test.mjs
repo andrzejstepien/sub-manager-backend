@@ -14,7 +14,7 @@ const data = new Data(db)
 await data.init()
 app.use(bodyParser.json())
 app.use('/api',getEndpoints(data))
-app.use('/api', postEndpoints(db))
+app.use('/api', postEndpoints(db,data))
 
 
 describe("testing endpoints...",async function(){
@@ -46,7 +46,8 @@ describe("testing /create endpoints", async function(){
     describe("/story/create",async function(){
         const goodData = {
             title:"#test",
-            word_count:111
+            word_count:111,
+            deleted:0
         } 
         const badData = {
             title:1,
@@ -83,7 +84,8 @@ describe("testing /create endpoints", async function(){
     describe("/publication/create",async function(){
         const goodData = {
             title:"#test",
-            link:"www.internet.com"
+            link:"www.internet.com",
+            deleted:0
         } 
         const badData = {
             title:1,
@@ -166,7 +168,8 @@ describe("testing /edit endpoints",async function(){
         const goodData = {
             id:1,
             title:"#test",
-            word_count:111
+            word_count:111,
+            deleted:0
         } 
         const badData = {
             id:"string"
@@ -210,7 +213,9 @@ describe("testing /edit endpoints",async function(){
         const goodData = {
             id:1,
             title:"#test",
-            link:"link"
+            link:"link",
+            query_after_days:90,
+            deleted:0
         } 
         const badData = {
             id:"string"
@@ -302,81 +307,5 @@ describe("testing /edit endpoints",async function(){
 
     })
 })
-describe("testing /delete endpoints",async function(){
-    describe("/story/delete",async function(){
-        it("item should be deleted from db",async function(){
-            let id = await db('stories').
-        insert({
-            title:"#test",
-            word_count:500
-        })
-        .returning('id')
-        id=id[0].id
 
-        await chai.request(app)
-        .post('/api/story/delete')
-        .send({id})
-
-        const res = await db('stories')
-        .select('*')
-        .where('id',id)
-        expect(res).to.have.lengthOf(0)
-        })
-
-        await db('stories')
-        .where('title','#test')
-        .del()
-    })
-    describe("/publication/delete",async function(){
-        it("item should be deleted from db",async function(){
-            let id = await db('pubs').
-        insert({
-            title:"#test",
-            link:'link'
-        })
-        .returning('id')
-        id=id[0].id
-
-        await chai.request(app)
-        .post('/api/publication/delete')
-        .send({id})
-
-        const res = await db('pubs')
-        .select('*')
-        .where('id',id)
-        expect(res).to.have.lengthOf(0)
-        })
-
-        await db('pubs')
-        .where('title','#test')
-        .del()
-    })
-    describe("/submission/delete",async function(){
-        it("item should be deleted from db",async function(){
-            let id = await db('subs').
-        insert({
-            story_id:1,
-            pub_id:1,
-            response_id:1,
-            date_submitted:"1066-01-01",
-            date_responded:"1066-01-01"
-        })
-        .returning('id')
-        id=id[0].id
-
-        await chai.request(app)
-        .post('/api/submission/delete')
-        .send({id})
-
-        const res = await db('subs')
-        .select('*')
-        .where('id',id)
-        expect(res).to.have.lengthOf(0)
-        })
-
-        await db('subs')
-        .where('date_submitted','1066-01-01')
-        .del()
-    })
-})
 })

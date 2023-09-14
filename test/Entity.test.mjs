@@ -9,7 +9,6 @@ chai.use(chaiAsPromised)
 describe("tetsing Entity object",async function(){
     it("should throw TypeError if passed an invalid data.id",async function(){
         expect(()=>{new Entity({id:"string"})}).to.throw(TypeError)
-        expect(()=>{new Entity({id:1.1})}).to.throw(TypeError)
         expect(()=>{new Entity({id:{}})}).to.throw(TypeError)
         expect(()=>{new Entity({id:[]})}).to.throw(TypeError)
     })

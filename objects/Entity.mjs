@@ -1,8 +1,10 @@
 export default class Entity{
     set _id(prop){
         if(prop){
-            const propNumber = Number(prop)
-            if(!Number.isInteger(propNumber)){throw new TypeError("id must be an integer!")}
+            const propNumber = Number.parseInt(prop)
+            console.log("PropNumber: "+propNumber)
+
+            if(Number.isNaN(propNumber)){throw new TypeError("id must be an integer!")}
             this.id = propNumber
         }
     }

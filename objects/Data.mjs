@@ -8,12 +8,14 @@ export class Data {
         this.stories = await this.getStories()
         this.stories.map(row=>{
             row.submissions=this.getSubmissionsByStoryId(row.id)
+            
         })
         this.publications = await this.getPublications()
         this.publications.map(row=>{
             row.submissions=this.getSubmissionsByPublicationId(row.id)
         })
         this.responses = await this.getResponses()
+        this.genres = await this.getGenres()
         return this
     }
     async getStories() {
@@ -44,7 +46,15 @@ export class Data {
         return this.#db('responses')
         .select('*')
     }
-
+    async getGenres(){
+        const res = await this.#db('genres')
+        .select('*')
+        const array = []
+        for (const row of res) {
+            array[row.id]=row.name
+        }
+        return array
+    }
     getSubmissionsByStoryId(id){
         return this.submissions.filter(row=>row.story_id==id)
     }
@@ -53,4 +63,28 @@ export class Data {
         return this.submissions.filter(row=>row.pub_id==id)
     }
 
+    async getGenresByStoryId(id){
+        const res = await this.#db('stories_genres')
+        .select('genre_id')
+        .where('story_id',id)        
+        return this.#makeGenreArray(res)
+    }
+    async getGenresByPublicationId(id){
+        const res = await this.#db('pubs_genres')
+        .select('genre_id')
+        .where('pub_id',id)
+        console.dir(res)
+        return this.#makeGenreArray(res)
+    }
+
+    #makeGenreArray(data){
+        const array = []
+        for (const row of data) {
+            array.push({
+                name:this.genres[row.genre_id],
+                id: row.genre_id
+            })
+        }
+        return array
+    }
 }

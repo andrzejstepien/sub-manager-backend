@@ -71,4 +71,17 @@ describe("Testing Data object...",function(){
             expect(row).to.contain.key('id')
         }
     })
+    it("getGenresByStoryId() should return an array",async function(){
+        const data = new Data(db)
+        await data.init()
+        const res = await data.getGenresByStoryId(1)
+        console.dir(res)
+        expect(res).to.be.a('array')
+    })
+    it("getGenresByPublicationId() should return an array",async function(){
+        const data = new Data(db)
+        await data.init()
+        const res = await data.getGenresByPublicationId(1)
+        expect(res).to.be.a('array')
+    })
 })

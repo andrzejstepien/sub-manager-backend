@@ -3,8 +3,8 @@ import logger from "../logger.mjs"
 export default class Story extends Title{
     set _word_count(prop){
         if(prop){
-            const propNumber = Number(prop)
-            if(!Number.isInteger(propNumber)){throw new TypeError("word_count must be integer!")}
+            const propNumber = Number.parseInt(prop)
+            if(Number.isNaN(propNumber)){throw new TypeError("word_count must be integer!")}
             this.word_count=propNumber
         }     
     }

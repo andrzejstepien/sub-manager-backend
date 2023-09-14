@@ -4,22 +4,22 @@ import dataValidation from "./dataValidation.mjs";
 export default class Submission extends Entity{
     set _story_id(prop){
         if(prop){
-            const propNumber = Number(prop)
-            if(!Number.isInteger(propNumber)){throw new TypeError("story_id must be an integer")}
+            const propNumber = Number.parseInt(prop)
+            if(Number.isNaN(propNumber)){throw new TypeError("story_id must be an integer")}
             this.story_id=propNumber
         }
     }
     set _pub_id(prop){
-        const propNumber = Number(prop)
+        const propNumber = Number.parseInt(prop)
         if(prop){
-            if(!Number.isInteger(propNumber)){throw new TypeError("pub_id must be an integer")}
+            if(Number.isNaN(propNumber)){throw new TypeError("pub_id must be an integer")}
             this.pub_id=propNumber
         }
     }
     set _response_id(prop){
         if(prop){
-            const propNumber = Number(prop)
-            if(!Number.isInteger(propNumber)){throw new TypeError("response_id must be an integer")}
+            const propNumber = Number.parseInt(prop)
+            if(Number.isNaN(propNumber)){throw new TypeError("response_id must be an integer")}
             this.response_id=propNumber
         }
     }
