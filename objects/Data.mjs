@@ -18,7 +18,7 @@ export class Data {
     }
     async getStories() {
         return this.#db('stories')
-            .select('id','title','word_count')
+            .select('id','title','word_count','deleted')
     }
     async getPublications() {
         return this.#db('pubs')

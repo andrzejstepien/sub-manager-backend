@@ -1,4 +1,5 @@
 import Title from "./Title.mjs"
+import logger from "../logger.mjs"
 export default class Story extends Title{
     set _word_count(prop){
         if(prop){
@@ -13,5 +14,6 @@ export default class Story extends Title{
     constructor(data){
         super(data)
         this._word_count=data?.word_count
+        logger.trace(this)
     }
 }

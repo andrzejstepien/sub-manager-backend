@@ -14,10 +14,18 @@ export default class Title extends Entity{
             this.genres=prop
         }
     }
+    set _deleted(prop){
+        if(prop){
+            if(prop===1 || prop===0){
+                this.deleted=prop
+            }
+        }
+    }
 
     constructor(data){
         super(data)
         this._title = data?.title
         this._genres = data?.genres
+        this._deleted = data?.deleted
     }
 }
