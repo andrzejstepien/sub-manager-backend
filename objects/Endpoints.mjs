@@ -34,6 +34,11 @@ export const getEndpoints = (dbObject) => {
         res.send(dbObject.responses)
         return
     })
+    router.get('/genres', (req,res)=>{
+        res.statusCode=200
+        res.send(dbObject.genres)
+        return
+    })
 
     return router
 }

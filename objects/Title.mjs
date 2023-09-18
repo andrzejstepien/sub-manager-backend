@@ -10,7 +10,7 @@ export default class Title extends Entity{
     }
     set _genres(prop){
         if(prop){
-            if(!dataValidation.isObject(prop)){throw new TypeError("genres must be an object")}
+            //if(!dataValidation.isObject(prop)){throw new TypeError("genres must be an object")}
             this.genres=prop
         }
     }
