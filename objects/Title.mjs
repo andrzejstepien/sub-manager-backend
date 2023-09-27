@@ -2,6 +2,7 @@ import Entity from "./Entity.mjs";
 import dataValidation from "./dataValidation.mjs";
 //THIS CLASS WILL HANDLE JUNCTION TABLE STUFF
 export default class Title extends Entity{
+    #genres
     set _title(prop){
         if(prop){
             if(!dataValidation.isString(prop)){throw new TypeError("title must be a string")}
@@ -10,8 +11,8 @@ export default class Title extends Entity{
     }
     set _genres(prop){
         if(prop){
-            //if(!dataValidation.isObject(prop)){throw new TypeError("genres must be an object")}
-            this.genres=prop
+            if(!dataValidation.isObject(prop)){throw new TypeError(`genres must be an object; this is a ${typeof prop}`)}
+            this.#genres=prop
         }
     }
     set _deleted(prop){
@@ -20,6 +21,9 @@ export default class Title extends Entity{
                 this.deleted=prop
             }
         }
+    }
+    get genres(){
+        return this.#genres
     }
 
     constructor(data){
