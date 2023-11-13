@@ -38,6 +38,9 @@ export default class Submission extends Entity{
     get table(){
         return 'subs'
     }
+    get idName(){
+        return 'sub_id'
+    }
     constructor(data){
         super(data)
         this._story_id=data?.story_id

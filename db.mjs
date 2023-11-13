@@ -15,3 +15,9 @@ export const db = knex({
     },
     useNullAsDefault: true
   })
+
+const memoryDB = knex({
+  client:'sqlite3',
+  connection: ':memory:'
+  })
+

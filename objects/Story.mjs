@@ -11,6 +11,9 @@ export default class Story extends Title{
     get table(){
         return 'stories'
     }
+    get idName(){
+        return 'story_id'
+    }
     constructor(data){
         super(data)
         this._word_count=data?.word_count
