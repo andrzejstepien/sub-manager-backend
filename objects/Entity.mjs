@@ -13,21 +13,30 @@ export default class Entity{
         this._id = data?.id
     }
     
-
-    async insert(db){
-        return db(this.table)
-        .insert(this)
+    async updateAppropriateJunctions(db,data){
+        if(typeof this.updateGenres === "function" ){
+            await this.updateGenres(db,data.genres)
+        }  
     }
-    async update(db){
-        return db(this.table)
+
+    async insert(db,data){
+        this.id = await db(this.table)
+        .insert(this)
+        .returning("id")
+        await this.updateAppropriateJunctions(db,data)
+    }
+    async update(db,data){
+        await db(this.table)
         .where('id',this.id)
         .update(this)
+        await this.updateAppropriateJunctions(db,data)
     }
-    async del(db){
+    async del(db,data){
         if(!this?.id){throw new Error("cannot delete without an id!")}
-        return db(this.table)
+        await db(this.table)
         .where('id',this.id)
         .del()
+        //RUN JUNCTION OPS IF APPROPRIATE
     }
 }
 

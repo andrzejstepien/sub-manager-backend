@@ -64,7 +64,7 @@ export const postEndpoints = (db,data) => {
         try {  
             logger.trace({data:req.body},"POST request received")
             const entity = new Entity(req.body)
-            await entity[method](db)
+            await entity[method](db,data)
             res.sendStatus(200)
             data.init()
             return
